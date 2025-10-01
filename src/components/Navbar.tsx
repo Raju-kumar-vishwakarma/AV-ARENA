@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const Navbar = () => {
   const location = useLocation();
@@ -22,6 +23,14 @@ const Navbar = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+
+  // Debug logging
+  useEffect(() => {
+    console.log("Navbar user:", user);
+  }, [user]);
+  useEffect(() => {
+    console.log("Navbar isAdmin:", isAdmin);
+  }, [isAdmin]);
 
   useEffect(() => {
     // Get initial session
@@ -179,8 +188,8 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* CTA Buttons */}
-          <div className="flex items-center gap-3">
+          {/* CTA Buttons (Desktop) */}
+          <div className="hidden md:flex items-center gap-3">
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -229,22 +238,71 @@ const Navbar = () => {
               </DropdownMenu>
             ) : (
               <>
+               
                 <Link to="/auth">
-                  <Button variant="ghost" className="hidden sm:inline-flex hover:text-primary">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button variant="default" className="hidden sm:inline-flex shadow-neon">
-                    Join Arena
-                  </Button>
+                  <Button variant="default" className="inline-flex shadow-neon">Join Arena</Button>
                 </Link>
               </>
             )}
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-            </Button>
           </div>
+
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent 
+            side="right" className="flex flex-col gap-4 p-6 text-center"
+            >
+              <button 
+                onClick={() => scrollToSection('home')}
+                className="text-lg font-semibold"
+              >
+                Home
+              </button>
+              <button 
+                onClick={() => scrollToSection('tournaments')}
+                className="text-lg font-semibold"
+              >
+                Tournaments
+              </button>
+              <button 
+                onClick={() => scrollToSection('features')}
+                className="text-lg font-semibold"
+              >
+                Features
+              </button>
+              <Link to="/contact" className="text-lg font-semibold">Contact</Link>
+
+              {isAdmin && (
+                <Link to="/admin" className="flex items-center gap-2 text-lg font-semibold">
+                  <Shield className="h-4 w-4" /> Admin
+                </Link>
+              )}
+
+              <div className="mt-6 flex flex-col gap-3 text-center">
+                {user ? (
+                  <>
+                    <Link to="/dashboard" className="text-lg font-semibold">Dashboard</Link>
+                    <Link to="/profile" className="text-lg font-semibold">Profile</Link>
+                    {isAdmin && <Link to="/admin" className="text-lg font-semibold">Admin Panel</Link>}
+                    <button onClick={handleSignOut} className="text-destructive text-lg font-semibold">
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    
+                    <Link to="/auth">
+                      <Button variant="default" className="w-full">Join Arena</Button>
+                    </Link>
+                  </>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </nav>

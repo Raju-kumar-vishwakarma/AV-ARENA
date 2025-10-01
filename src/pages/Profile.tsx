@@ -8,11 +8,12 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, Plus, X } from "lucide-react";
+import { CalendarIcon, Plus, X, Upload } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
 import Navbar from "@/components/Navbar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const profileSchema = z.object({
   full_name: z.string().trim().min(1, "Name is required").max(100),
@@ -36,6 +37,8 @@ const Profile = () => {
   const [teamMembers, setTeamMembers] = useState<string[]>([]);
   const [newMember, setNewMember] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     fetchProfile();
@@ -70,11 +73,51 @@ const Profile = () => {
       setTeamName(profileData.team_name || "");
       setPhoneNo(profileData.phone_no || "");
       setTeamMembers(profileData.team_members || []);
+      setAvatarUrl(profileData.avatar_url || "");
       if (profileData.date_of_birth) {
         setDateOfBirth(new Date(profileData.date_of_birth));
       }
     }
     setLoading(false);
+  };
+
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      setUploading(true);
+      
+      if (!event.target.files || event.target.files.length === 0) {
+        return;
+      }
+
+      const file = event.target.files[0];
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${userId}/${Math.random()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(filePath);
+
+      setAvatarUrl(publicUrl);
+      
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('id', userId);
+
+      if (updateError) throw updateError;
+
+      toast({ title: "Avatar uploaded successfully!" });
+    } catch (error: any) {
+      toast({ title: "Error uploading avatar", description: error.message, variant: "destructive" });
+    } finally {
+      setUploading(false);
+    }
   };
 
   const addTeamMember = () => {
@@ -155,6 +198,32 @@ const Profile = () => {
             <CardTitle>Edit Profile</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <Avatar className="h-32 w-32">
+                <AvatarImage src={avatarUrl} alt={fullName} />
+                <AvatarFallback className="text-4xl">
+                  {fullName ? fullName.charAt(0).toUpperCase() : "?"}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col items-center gap-2">
+                <Label htmlFor="avatar" className="cursor-pointer">
+                  <div className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90">
+                    <Upload className="h-4 w-4" />
+                    {uploading ? "Uploading..." : "Upload Avatar"}
+                  </div>
+                </Label>
+                <Input
+                  id="avatar"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleAvatarUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+                <p className="text-xs text-muted-foreground">JPG, PNG or WEBP (Max 5MB)</p>
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="fullName">Full Name *</Label>
               <Input

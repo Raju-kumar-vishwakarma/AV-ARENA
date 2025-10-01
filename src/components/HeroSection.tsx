@@ -8,7 +8,7 @@ const HeroSection = () => {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Background image with overlay */}
       <div 
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: `url(${gamingHero})`,
           backgroundSize: 'cover',
@@ -16,6 +16,8 @@ const HeroSection = () => {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-background/98 via-background/95 to-primary/20" />
+        {/* Blare/blur effect overlay */}
+        <div className="absolute inset-0 backdrop-blur-md" />
       </div>
 
       {/* Animated grid background */}
@@ -25,64 +27,65 @@ const HeroSection = () => {
       <div className="container relative z-10 px-4 py-24 mx-auto">
         <div className="max-w-5xl mx-auto text-center space-y-8">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 shadow-neon animate-fade-in">
-            <Zap className="w-4 h-4 text-primary animate-pulse" />
-            <span className="text-sm font-bold text-foreground tracking-wider">NEXT-GEN GAMING PLATFORM</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/60 via-accent/40 to-secondary/60 border border-primary/40 shadow-neon animate-fade-in animate-bounce">
+        <Zap className="w-4 h-4 text-primary animate-pulse" />
+        <span className="text-sm font-bold text-foreground tracking-wider drop-shadow-neon">NEXT-GEN GAMING PLATFORM</span>
           </div>
 
           {/* Heading */}
-          <h1 className="text-6xl md:text-8xl font-black tracking-tight animate-fade-in">
-            <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-lg">
-              AV ARENA
-            </span>
-            <br />
-            <span className="text-foreground text-4xl md:text-6xl mt-4 block">
-              Where Champions Are Made
-            </span>
+          <h1 className="text-6xl md:text-8xl font-black tracking-tight animate-fade-in animate-text-glow">
+        <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-neon font-extrabold">
+          AV ARENA
+        </span>
+        <br />
+        <span className="text-foreground text-4xl md:text-6xl mt-4 block text-[#010101] font-extrabold animate-flicker">
+          Where Champions Are Made
+        </span>
           </h1>
 
           {/* Description */}
-          <p className="text-xl md:text-2xl text-foreground/90 max-w-3xl mx-auto animate-fade-in leading-relaxed font-medium">
-            Join the ultimate gaming arena. Compete in epic tournaments, climb leaderboards, 
-            and prove your skills against the best players worldwide.
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed animate-fade-in">
+        The ultimate Discord bot for <span className="text-accent font-semibold animate-pulse">Esports</span> and{" "}
+        <span className="text-primary font-semibold animate-pulse">Scrims</span> communities. Automate tournaments,
+        manage registrations, and track results with zero hassle.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4 animate-fade-in">
-            <Link to="/auth">
-              <Button variant="hero" size="lg" className="text-lg shadow-neon group">
-                <Gamepad2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
-                Start Playing Now
-              </Button>
-            </Link>
-            <a href="#tournaments">
-              <Button variant="outline" size="lg" className="text-lg border-primary/50 hover:border-primary">
-                <Trophy className="mr-2 h-5 w-5" />
-                View Tournaments
-              </Button>
-            </a>
+        <Link to="/auth">
+            <Button variant="hero" size="lg" className="text-lg shadow-neon group animate-bounce-slow">
+            <Gamepad2 className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+            Start Playing Now
+            </Button>
+        </Link>
+        <a href="#tournaments">
+          <Button variant="outline" size="lg" className="text-lg border-primary/50 hover:border-primary animate-pulse">
+            <Trophy className="mr-2 h-5 w-5" />
+            View Tournaments
+          </Button>
+        </a>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 pt-16 max-w-3xl mx-auto">
-            <div className="space-y-2 group hover:scale-110 transition-transform">
-              <div className="text-5xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                50K+
-              </div>
-              <div className="text-sm text-foreground/80 font-semibold">Active Players</div>
-            </div>
-            <div className="space-y-2 group hover:scale-110 transition-transform">
-              <div className="text-5xl font-black bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">
-                1000+
-              </div>
-              <div className="text-sm text-foreground/80 font-semibold">Tournaments</div>
-            </div>
-            <div className="space-y-2 group hover:scale-110 transition-transform">
-              <div className="text-5xl font-black bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
-                $2M+
-              </div>
-              <div className="text-sm text-foreground/80 font-semibold">Prize Pool</div>
-            </div>
+        <div className="space-y-2 group hover:scale-110 transition-transform animate-fade-in">
+          <div className="text-5xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent drop-shadow-neon animate-pulse">
+            50K+
+          </div>
+          <div className="text-sm text-foreground/80 font-semibold">Active Players</div>
+        </div>
+        <div className="space-y-2 group hover:scale-110 transition-transform animate-fade-in">
+          <div className="text-5xl font-black bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent drop-shadow-neon animate-pulse">
+            1000+
+          </div>
+          <div className="text-sm text-foreground/80 font-semibold">Tournaments</div>
+        </div>
+        <div className="space-y-2 group hover:scale-110 transition-transform animate-fade-in">
+          <div className="text-5xl font-black bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent drop-shadow-neon animate-pulse">
+            $2M+
+          </div>
+          <div className="text-sm text-foreground/80 font-semibold">Prize Pool</div>
+        </div>
           </div>
         </div>
       </div>

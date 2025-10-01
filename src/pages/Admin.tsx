@@ -40,12 +40,14 @@ interface UserProfile {
 interface UserWithRole extends UserProfile {
   roles: string[];
   isAdmin: boolean;
+  isOwner: boolean;
 }
 
 const Admin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(true);
   const [tournaments, setTournaments] = useState<Tournament[]>([]);
   const [users, setUsers] = useState<UserWithRole[]>([]);
@@ -90,17 +92,26 @@ const Admin = () => {
     const { data: roles } = await supabase
       .from("user_roles")
       .select("role")
-      .eq("user_id", user.id)
-      .eq("role", "admin")
-      .single();
+      .eq("user_id", user.id);
 
-    if (!roles) {
-      toast({ title: "Access Denied", description: "Admin access required", variant: "destructive" });
+    if (!roles || roles.length === 0) {
+      toast({ title: "Access Denied", description: "Admin or Owner access required", variant: "destructive" });
       navigate("/");
       return;
     }
 
-    setIsAdmin(true);
+    const roleNames = roles.map(r => r.role);
+    const hasOwner = roleNames.includes("owner");
+    const hasAdmin = roleNames.includes("admin");
+
+    if (!hasOwner && !hasAdmin) {
+      toast({ title: "Access Denied", description: "Admin or Owner access required", variant: "destructive" });
+      navigate("/");
+      return;
+    }
+
+    setIsOwner(hasOwner);
+    setIsAdmin(hasAdmin || hasOwner);
     setLoading(false);
   };
 
@@ -220,13 +231,61 @@ const Admin = () => {
         ...profile,
         roles: userRoles,
         isAdmin: userRoles.includes("admin"),
+        isOwner: userRoles.includes("owner"),
       };
     });
 
     setUsers(usersWithRoles);
   };
 
+  const handleMakeOwner = async (userId: string) => {
+    if (!isOwner) {
+      toast({ title: "Access Denied", description: "Only owners can promote other users to owner", variant: "destructive" });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("user_roles")
+        .insert({ user_id: userId, role: "owner" });
+
+      if (error) throw error;
+      toast({ title: "Success", description: "User promoted to owner" });
+      fetchUsers();
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
+
+  const handleRemoveOwner = async (userId: string) => {
+    if (!isOwner) {
+      toast({ title: "Access Denied", description: "Only owners can remove owner privileges", variant: "destructive" });
+      return;
+    }
+
+    if (!confirm("Are you sure you want to remove owner privileges from this user?")) return;
+
+    try {
+      const { error } = await supabase
+        .from("user_roles")
+        .delete()
+        .eq("user_id", userId)
+        .eq("role", "owner");
+
+      if (error) throw error;
+      toast({ title: "Success", description: "Owner privileges removed" });
+      fetchUsers();
+    } catch (error: any) {
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    }
+  };
+
   const handleMakeAdmin = async (userId: string) => {
+    if (!isOwner) {
+      toast({ title: "Access Denied", description: "Only owners can promote users to admin", variant: "destructive" });
+      return;
+    }
+
     try {
       const { error } = await supabase
         .from("user_roles")
@@ -241,6 +300,11 @@ const Admin = () => {
   };
 
   const handleRemoveAdmin = async (userId: string) => {
+    if (!isOwner) {
+      toast({ title: "Access Denied", description: "Only owners can remove admin privileges", variant: "destructive" });
+      return;
+    }
+
     if (!confirm("Are you sure you want to remove admin privileges from this user?")) return;
 
     try {
@@ -313,7 +377,7 @@ const Admin = () => {
       <div className="container mx-auto px-4 py-24">
         <div className="flex items-center gap-3 mb-8">
           <Shield className="h-8 w-8 text-primary" />
-          <h1 className="text-4xl font-black">Admin Dashboard</h1>
+          <h1 className="text-2xl md:text-4xl font-black">Admin Dashboard</h1>
         </div>
 
         <Tabs defaultValue="tournaments" className="w-full">
@@ -561,11 +625,12 @@ const Admin = () => {
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-start justify-between">
+                        <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="text-xl font-bold">{user.full_name || "No Name"}</h3>
-                            {user.isAdmin && <Badge variant="default">Admin</Badge>}
+                            {user.isOwner && <Badge variant="destructive">Owner</Badge>}
+                            {user.isAdmin && !user.isOwner && <Badge variant="default">Admin</Badge>}
                           </div>
                           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                             <div>
@@ -590,20 +655,35 @@ const Admin = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="flex gap-2 ml-4">
+                        <div className="flex flex-col gap-2 ml-4">
                           <Button variant="outline" size="sm" onClick={() => handleEditUser(user)}>
                             <Edit className="h-4 w-4" />
                           </Button>
-                          {user.isAdmin ? (
-                            <Button variant="destructive" size="sm" onClick={() => handleRemoveAdmin(user.id)}>
-                              <Shield className="h-4 w-4 mr-1" />
-                              Remove Admin
-                            </Button>
-                          ) : (
-                            <Button variant="default" size="sm" onClick={() => handleMakeAdmin(user.id)}>
-                              <Shield className="h-4 w-4 mr-1" />
-                              Make Admin
-                            </Button>
+                          {isOwner && (
+                            <>
+                              {user.isOwner ? (
+                                <Button variant="destructive" size="sm" onClick={() => handleRemoveOwner(user.id)}>
+                                  <Shield className="h-4 w-4 mr-1" />
+                                  Remove Owner
+                                </Button>
+                              ) : (
+                                <Button variant="default" size="sm" onClick={() => handleMakeOwner(user.id)}>
+                                  <Shield className="h-4 w-4 mr-1" />
+                                  Make Owner
+                                </Button>
+                              )}
+                              {user.isAdmin && !user.isOwner ? (
+                                <Button variant="destructive" size="sm" onClick={() => handleRemoveAdmin(user.id)}>
+                                  <Shield className="h-4 w-4 mr-1" />
+                                  Remove Admin
+                                </Button>
+                              ) : !user.isOwner ? (
+                                <Button variant="default" size="sm" onClick={() => handleMakeAdmin(user.id)}>
+                                  <Shield className="h-4 w-4 mr-1" />
+                                  Make Admin
+                                </Button>
+                              ) : null}
+                            </>
                           )}
                         </div>
                       </div>
