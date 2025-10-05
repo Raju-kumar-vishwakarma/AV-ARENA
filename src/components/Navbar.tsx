@@ -1,5 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Menu, Gamepad2, LogOut, Shield, User as UserIcon, LayoutDashboard, Crown } from "lucide-react";
+import {
+  Menu,
+  Gamepad2,
+  LogOut,
+  Shield,
+  User as UserIcon,
+  LayoutDashboard,
+  Crown,
+} from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
@@ -34,7 +42,9 @@ const Navbar = () => {
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         checkAdminStatus(session.user.id);
@@ -53,9 +63,9 @@ const Navbar = () => {
       .select("role")
       .eq("user_id", userId)
       .in("role", ["admin", "owner"]);
-    
+
     if (data) {
-      const roles = data.map(r => r.role);
+      const roles = data.map((r) => r.role);
       setIsOwner(roles.includes("owner"));
       setIsAdmin(roles.includes("admin") || roles.includes("owner"));
     }
@@ -64,14 +74,17 @@ const Navbar = () => {
   useEffect(() => {
     // Track active section based on scroll position
     const handleScroll = () => {
-      const sections = ['home', 'tournaments', 'features'];
+      const sections = ["home", "tournaments", "features"];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
           const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
             setActiveSection(section);
             break;
           }
@@ -79,8 +92,8 @@ const Navbar = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleSignOut = async () => {
@@ -101,20 +114,20 @@ const Navbar = () => {
   };
 
   const scrollToSection = (sectionId: string) => {
-    if (location.pathname !== '/') {
-      navigate('/');
+    if (location.pathname !== "/") {
+      navigate("/");
       setTimeout(() => {
         const element = document.getElementById(sectionId);
-        element?.scrollIntoView({ behavior: 'smooth' });
+        element?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     } else {
       const element = document.getElementById(sectionId);
-      element?.scrollIntoView({ behavior: 'smooth' });
+      element?.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-primary/20 text-white transition-all fixed shadow-lg z-50 backdrop-blur-xl ">
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-primary/20 text-white transition-all shadow-lg backdrop-blur-xl ">
       <div className="container px-4 mx-auto">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -129,53 +142,53 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            <button 
-              onClick={() => scrollToSection('home')}
+            <button
+              onClick={() => scrollToSection("home")}
               className={`text-sm font-semibold transition-colors ${
-                activeSection === 'home' && location.pathname === '/' 
-                  ? 'text-primary' 
-                  : 'text-muted-foreground hover:text-primary'
+                activeSection === "home" && location.pathname === "/"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
               }`}
             >
               Home
             </button>
-            <button 
-              onClick={() => scrollToSection('tournaments')}
+            <button
+              onClick={() => scrollToSection("tournaments")}
               className={`text-sm font-semibold transition-colors ${
-                activeSection === 'tournaments' && location.pathname === '/' 
-                  ? 'text-primary' 
-                  : 'text-muted-foreground hover:text-primary'
+                activeSection === "tournaments" && location.pathname === "/"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
               }`}
             >
               Tournaments
             </button>
-            <button 
-              onClick={() => scrollToSection('features')}
+            <button
+              onClick={() => scrollToSection("features")}
               className={`text-sm font-semibold transition-colors ${
-                activeSection === 'features' && location.pathname === '/' 
-                  ? 'text-primary' 
-                  : 'text-muted-foreground hover:text-primary'
+                activeSection === "features" && location.pathname === "/"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
               }`}
             >
               Features
             </button>
-            <Link 
-              to="/contact" 
+            <Link
+              to="/contact"
               className={`text-sm font-semibold transition-colors ${
-                location.pathname === '/contact' 
-                  ? 'text-primary' 
-                  : 'text-muted-foreground hover:text-primary'
+                location.pathname === "/contact"
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
               }`}
             >
               Contact
             </Link>
             {isOwner && (
-              <Link 
-                to="/admin" 
+              <Link
+                to="/admin"
                 className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
-                  location.pathname === '/admin' 
-                    ? 'text-primary' 
-                    : 'text-muted-foreground hover:text-primary'
+                  location.pathname === "/admin"
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-primary"
                 }`}
               >
                 <Crown className="h-4 w-4" />
@@ -183,12 +196,12 @@ const Navbar = () => {
               </Link>
             )}
             {isAdmin && !isOwner && (
-              <Link 
-                to="/admin" 
+              <Link
+                to="/admin"
                 className={`text-sm font-semibold transition-colors flex items-center gap-1 ${
-                  location.pathname === '/admin' 
-                    ? 'text-primary' 
-                    : 'text-muted-foreground hover:text-primary'
+                  location.pathname === "/admin"
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-primary"
                 }`}
               >
                 <Shield className="h-4 w-4" />
@@ -196,40 +209,49 @@ const Navbar = () => {
               </Link>
             )}
           </div>
-
           {/* CTA Buttons */}
           <div className="flex items-center gap-3">
             {user ? (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                {/* <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
                     <Avatar className="h-10 w-10">
                       <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white">
-                        {user.email?.charAt(0).toUpperCase() || 'U'}
+                        {user.email?.charAt(0).toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
+
                 <DropdownMenuContent className="w-56" align="end">
                   <DropdownMenuLabel>
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium">My Account</p>
-                      <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {user.email}
+                      </p>
                     </div>
                   </DropdownMenuLabel>
+
                   <DropdownMenuSeparator />
+
                   <DropdownMenuItem asChild>
                     <Link to="/dashboard" className="cursor-pointer">
                       <LayoutDashboard className="mr-2 h-4 w-4" />
                       Dashboard
                     </Link>
                   </DropdownMenuItem>
+
                   <DropdownMenuItem asChild>
                     <Link to="/profile" className="cursor-pointer">
                       <UserIcon className="mr-2 h-4 w-4" />
                       Profile
                     </Link>
                   </DropdownMenuItem>
+
                   {isOwner && (
                     <DropdownMenuItem asChild>
                       <Link to="/admin" className="cursor-pointer">
@@ -238,6 +260,7 @@ const Navbar = () => {
                       </Link>
                     </DropdownMenuItem>
                   )}
+
                   {isAdmin && !isOwner && (
                     <DropdownMenuItem asChild>
                       <Link to="/admin" className="cursor-pointer">
@@ -246,8 +269,82 @@ const Navbar = () => {
                       </Link>
                     </DropdownMenuItem>
                   )}
+
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-destructive">
+
+                  <DropdownMenuItem
+                    className="cursor-pointer text-red-500 focus:text-red-500"
+                    onClick={handleSignOut}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent> */}
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-10 w-10 rounded-full"
+                  >
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-white">
+                        {user.email?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent className="w-56" align="end">
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium">My Account</p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem asChild>
+                    <Link to="/dashboard" className="cursor-pointer">
+                      <LayoutDashboard className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="cursor-pointer">
+                      <UserIcon className="mr-2 h-4 w-4" />
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+
+                  {isOwner && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="cursor-pointer">
+                        <Crown className="mr-2 h-4 w-4" />
+                        Owner Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+
+                  {isAdmin && !isOwner && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/admin" className="cursor-pointer">
+                        <Shield className="mr-2 h-4 w-4" />
+                        Admin Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem
+                    className="cursor-pointer text-red-500 focus:text-red-500"
+                    onClick={handleSignOut}
+                  >
                     <LogOut className="mr-2 h-4 w-4" />
                     Sign Out
                   </DropdownMenuItem>
@@ -256,20 +353,29 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/auth">
-                  <Button variant="ghost" className="hidden sm:inline-flex hover:text-primary">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/auth">
-                  <Button variant="default" className="hidden sm:inline-flex shadow-neon">
+                  <Button
+                    variant="default"
+                    className="hidden sm:inline-flex shadow-neon"
+                  >
                     Join Arena
                   </Button>
                 </Link>
               </>
             )}
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-            </Button>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button
+                    variant="default"
+                    className=" sm:inline-flex shadow-neon"
+                  >
+                    Join Arena
+                  </Button>
+                </Link>
+              </>
+            )}
+            
           </div>
         </div>
       </div>
