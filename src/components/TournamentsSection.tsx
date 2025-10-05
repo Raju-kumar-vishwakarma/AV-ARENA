@@ -86,7 +86,7 @@ const TournamentsSection = () => {
             {tournaments.map((tournament) => (
               <Card 
                 key={tournament.id} 
-                className="group hover:shadow-neon transition-all duration-300 hover:-translate-y-2 border-primary/30 bg-card/50 backdrop-blur overflow-hidden"
+                className="group hover:shadow-neon transition-all duration-300 hover:-translate-y-2 border-primary/30 bg-card/50 backdrop-blur overflow-hidden content-center"
               >
                 <div className="h-2 bg-gradient-to-r from-primary via-accent to-secondary" />
                 <CardHeader>
@@ -102,7 +102,7 @@ const TournamentsSection = () => {
                   <CardTitle className="text-xl font-bold">{tournament.title}</CardTitle>
                   <p className="text-sm text-muted-foreground">{tournament.game}</p>
                 </CardHeader>
-                <CardContent className="space-y-3">
+                <CardContent className="space-y-3 ">
                   <div className="flex items-center gap-2 text-sm">
                     <DollarSign className="w-4 h-4 text-secondary" />
                     <span className="font-bold text-secondary">{tournament.prize_pool}</span>

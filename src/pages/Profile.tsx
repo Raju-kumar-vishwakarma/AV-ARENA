@@ -9,7 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon, Plus, X, Upload } from "lucide-react";
-import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { z } from "zod";
 import Navbar from "@/components/Navbar";
@@ -20,7 +19,6 @@ const profileSchema = z.object({
   username: z.string().trim().min(3, "Username must be at least 3 characters").max(50),
   team_name: z.string().trim().max(100).optional(),
   phone_no: z.string().trim().regex(/^\+?[\d\s-()]+$/, "Invalid phone number").max(20).optional(),
-  date_of_birth: z.date().optional(),
 });
 
 const Profile = () => {
@@ -151,7 +149,6 @@ const Profile = () => {
           username: validatedData.username,
           team_name: validatedData.team_name,
           phone_no: validatedData.phone_no,
-          date_of_birth: validatedData.date_of_birth ? format(validatedData.date_of_birth, "yyyy-MM-dd") : null,
           team_members: teamMembers,
         })
         .eq("id", userId);
@@ -258,36 +255,6 @@ const Profile = () => {
             </div>
 
             <div className="space-y-2">
-              <Label>Date of Birth</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !dateOfBirth && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {dateOfBirth ? format(dateOfBirth, "PPP") : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dateOfBirth}
-                    onSelect={setDateOfBirth}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                    className="pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="teamName">Team Name</Label>
               <Input
                 id="teamName"
@@ -314,7 +281,7 @@ const Profile = () => {
                 {teamMembers.map((member, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-1 bg-secondary px-3 py-1 rounded-full"
+                    className="flex items-center gap-1 border-2  px-3 py-1 rounded-full"
                   >
                     <span className="text-sm">{member}</span>
                     <Button
