@@ -19,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import CreatedBy from "@/components/CreatedBy";
 
 interface Tournament {
   id: string;
@@ -736,6 +737,7 @@ const Admin = () => {
           </TabsContent>
         </Tabs>
       </div>
+      <CreatedBy />
     </div>
   );
 };

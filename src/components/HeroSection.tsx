@@ -39,11 +39,11 @@ const HeroSection = () => {
 
           {/* Heading */}
           <h1 className="text-6xl md:text-8xl font-black tracking-tight animate-fade-in animate-text-glow">
-            <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent drop-shadow-neon font-extrabold">
+            <span className="bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text drop-shadow-neon font-extrabold text-[#f3f3f3]">
               AV ARENA
             </span>
             <br />
-            <span className="text-foreground text-4xl md:text-6xl mt-4 block text-[#f3f3f3] font-extrabold animate-flicker">
+            <span className="text-foreground text-4xl md:text-6xl mt-4 block text-[#f3f3f3] font-extrabold animate-flicker ">
               Where Champions Are Made
             </span>
           </h1>

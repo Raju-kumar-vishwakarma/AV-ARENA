@@ -4,6 +4,7 @@ import FeaturesSection from "@/components/FeaturesSection";
 import TournamentsSection from "@/components/TournamentsSection";
 import AboutSection from "@/components/AboutSection";
 import CTASection from "@/components/CTASection";
+import CreatedBy from "@/components/CreatedBy";
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
         <AboutSection />
         <CTASection />
       </main>
+      <CreatedBy />
     </div>
   );
 };

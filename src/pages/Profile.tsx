@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { z } from "zod";
 import Navbar from "@/components/Navbar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import CreatedBy from "@/components/CreatedBy";
 
 const profileSchema = z.object({
   full_name: z.string().trim().min(1, "Name is required").max(100),
@@ -309,6 +310,7 @@ const Profile = () => {
           </CardContent>
         </Card>
       </div>
+      <CreatedBy/>
     </div>
   );
 };

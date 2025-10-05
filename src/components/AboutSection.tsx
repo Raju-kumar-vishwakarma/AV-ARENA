@@ -115,9 +115,9 @@ const AboutSection = () => {
         </div>
 
         {/* Animated Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card className="bg-card/50 backdrop-blur border-primary/30 hover:border-primary/60 transition-all">
-            <CardContent className="p-6 text-center">
+            <CardContent className="p-2 text-center cursor-pointer">
               <Users className="w-8 h-8 text-primary mx-auto mb-3" />
               <div className="text-3xl font-black text-primary mb-1">
                 {stats.players.toLocaleString()}+
@@ -127,7 +127,7 @@ const AboutSection = () => {
           </Card>
 
           <Card className="bg-card/50 backdrop-blur border-accent/30 hover:border-accent/60 transition-all">
-            <CardContent className="p-6 text-center">
+            <CardContent className="p-6 text-center cursor-pointer">
               <Trophy className="w-8 h-8 text-accent mx-auto mb-3" />
               <div className="text-3xl font-black text-accent mb-1">
                 {stats.tournaments.toLocaleString()}+
@@ -137,7 +137,7 @@ const AboutSection = () => {
           </Card>
 
           <Card className="bg-card/50 backdrop-blur border-secondary/30 hover:border-secondary/60 transition-all">
-            <CardContent className="p-6 text-center">
+            <CardContent className="p-6 text-center cursor-pointer">
               <Award className="w-8 h-8 text-secondary mx-auto mb-3" />
               <div className="text-3xl font-black text-secondary mb-1">
                 ${(stats.prizePool / 1000000).toFixed(1)}M+
@@ -147,7 +147,7 @@ const AboutSection = () => {
           </Card>
 
           <Card className="bg-card/50 backdrop-blur border-primary/30 hover:border-primary/60 transition-all">
-            <CardContent className="p-6 text-center">
+            <CardContent className= "p-6 text-center cursor-pointer">
               <Target className="w-8 h-8 text-primary mx-auto mb-3" />
               <div className="text-3xl font-black text-primary mb-1">
                 {stats.countries}+
@@ -168,7 +168,7 @@ const AboutSection = () => {
           <TabsContent value="mission" className="space-y-8">
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Card className="bg-card/50 backdrop-blur border-primary/30 hover:border-primary/60 transition-all hover:-translate-y-2">
-                <CardContent className="p-6">
+                <CardContent className="p-6 cursor-pointer">
                   <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mb-4">
                     <Trophy className="w-6 h-6 text-primary" />
                   </div>
@@ -180,7 +180,7 @@ const AboutSection = () => {
               </Card>
 
               <Card className="bg-card/50 backdrop-blur border-accent/30 hover:border-accent/60 transition-all hover:-translate-y-2">
-                <CardContent className="p-6">
+                <CardContent className="p-6 cursor-pointer">
                   <div className="w-12 h-12 rounded-lg bg-accent/20 flex items-center justify-center mb-4">
                     <Users className="w-6 h-6 text-accent" />
                   </div>
@@ -192,7 +192,7 @@ const AboutSection = () => {
               </Card>
 
               <Card className="bg-card/50 backdrop-blur border-secondary/30 hover:border-secondary/60 transition-all hover:-translate-y-2">
-                <CardContent className="p-6">
+                <CardContent className="p-6 cursor-pointer">
                   <div className="w-12 h-12 rounded-lg bg-secondary/20 flex items-center justify-center mb-4">
                     <Zap className="w-6 h-6 text-secondary" />
                   </div>
@@ -204,7 +204,7 @@ const AboutSection = () => {
               </Card>
 
               <Card className="bg-card/50 backdrop-blur border-primary/30 hover:border-primary/60 transition-all hover:-translate-y-2">
-                <CardContent className="p-6">
+                <CardContent className="p-6 cursor-pointer">
                   <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mb-4">
                     <Shield className="w-6 h-6 text-primary" />
                   </div>
@@ -217,7 +217,7 @@ const AboutSection = () => {
             </div>
 
             <Card className="bg-card/50 backdrop-blur border-primary/30 shadow-neon">
-              <CardContent className="p-8 lg:p-12">
+              <CardContent className="p-8 lg:p-12 ">
                 <div className="max-w-3xl mx-auto text-center space-y-6">
                   <h3 className="text-3xl font-black">Our Mission</h3>
                   <p className="text-lg text-muted-foreground">
@@ -246,7 +246,7 @@ const AboutSection = () => {
               {teamMembers.map((member, index) => (
                 <Card 
                   key={index}
-                  className="bg-card/50 backdrop-blur border-primary/30 hover:border-primary/60 transition-all hover:-translate-y-2 group"
+                  className="bg-card/50 backdrop-blur border-primary/30 hover:border-primary/60 transition-all hover:-translate-y-2 group cursor-pointer"
                 >
                   <CardContent className="p-6 text-center space-y-4">
                     <div className="text-6xl mb-4 group-hover:scale-110 transition-transform">

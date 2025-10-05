@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import CreatedBy from "@/components/CreatedBy";
 
 const NotFound = () => {
   const location = useLocation();
@@ -15,6 +16,7 @@ const NotFound = () => {
           Return to Home
         </a>
       </div>
+      <CreatedBy />
     </div>
   );
 };

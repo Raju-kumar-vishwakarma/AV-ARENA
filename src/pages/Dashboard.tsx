@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Trophy, Calendar, DollarSign, User } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import CreatedBy from "@/components/CreatedBy";
 
 interface Registration {
   id: string;
@@ -215,6 +216,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <CreatedBy/>
     </div>
   );
 };

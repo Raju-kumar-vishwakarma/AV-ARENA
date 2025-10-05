@@ -133,10 +133,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-accent to-secondary flex items-center justify-center shadow-neon transition-all duration-300 group-hover:scale-110">
+            {/* <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary via-accent to-secondary flex items-center justify-center shadow-neon transition-all duration-300 group-hover:scale-110">
               <Gamepad2 className="w-6 h-6 text-white" />
-            </div>
-            <span className="text-2xl font-black tracking-wider bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+            </div> */}
+            <span className="text-2xl font-black tracking-wider from-primary via-accent to-secondary bg-clip-text text-white">
               AV ARENA
             </span>
           </Link>
@@ -343,7 +343,7 @@ const Navbar = () => {
                   <DropdownMenuSeparator />
 
                   <DropdownMenuItem
-                    className="cursor-pointer text-red-500 focus:text-red-500"
+                    className="cursor-pointer text-red-500 hover:text-red-500 focus:text-white"
                     onClick={handleSignOut}
                   >
                     <LogOut className="mr-2 h-4 w-4" />

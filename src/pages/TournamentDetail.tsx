@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Trophy, Users, Calendar, DollarSign, ArrowLeft, Clock, Layout } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import CreatedBy from "@/components/CreatedBy";
 
 interface Tournament {
   id: string;
@@ -315,6 +316,7 @@ const TournamentDetail = () => {
           </div>
         </div>
       </div>
+      <CreatedBy />
     </div>
   );
 };

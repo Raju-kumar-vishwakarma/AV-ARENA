@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { BracketView } from "@/components/BracketView";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import CreatedBy from "@/components/CreatedBy";
 
 interface Tournament {
   id: string;
@@ -83,6 +84,7 @@ const TournamentBracket = () => {
           <BracketView tournamentId={id!} />
         </div>
       </main>
+      <CreatedBy />
     </div>
   );
 };
