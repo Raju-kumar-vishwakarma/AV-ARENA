@@ -50,9 +50,9 @@ const FeaturesSection = () => {
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
       
-      <div className="container px-4 mx-auto relative z-10">
+      <div className="container mx-auto relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-5xl md:text-6xl font-black mb-6">
+          <h2 className="text-3xl md:text-6xl font-black mb-6">
             Dominate With
             <span className="block bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
               Premium Features
@@ -63,7 +63,7 @@ const FeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 cursor-pointer">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 cursor-pointer md:mx-0">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
