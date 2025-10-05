@@ -55,7 +55,7 @@ const HeroSection = () => {
               Esports
             </span>{" "}
             and{" "}
-            <span className="text-primary font-semibold animate-pulse">
+            <span className="text-black font-semibold animate-pulse">
               Scrims
             </span>{" "}
             communities. Automate tournaments, manage registrations, and track
