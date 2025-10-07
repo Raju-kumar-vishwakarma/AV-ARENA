@@ -16,7 +16,6 @@ const NotFound = () => {
           Return to Home
         </a>
       </div>
-      <CreatedBy />
     </div>
   );
 };
